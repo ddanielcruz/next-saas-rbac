@@ -1,0 +1,17 @@
+{
+  "name": "@saas/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "node.js",
+    "react.js"
+  ],
+  "devDependencies": {
+    "@ae-studio/eslint-config": "^2.1.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "./react.js"
+    ]
+  }
+}
