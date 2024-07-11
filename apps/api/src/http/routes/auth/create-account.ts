@@ -30,9 +30,31 @@ export async function createAccount(app: FastifyInstance) {
         return reply.status(409).send({ message: 'Email already in use.' });
       }
 
+      const [, domain] = email.split('@');
+      const autoJoinOrg = await prisma.organization.findFirst({
+        select: { id: true },
+        where: {
+          domain,
+          shouldAttachUsersByDomain: true,
+        },
+      });
+
       const passwordHash = await hash(password, 10);
 
-      await prisma.user.create({ data: { email, name, passwordHash } });
+      await prisma.user.create({
+        data: {
+          email,
+          name,
+          passwordHash,
+          memberOn: autoJoinOrg
+            ? {
+                create: {
+                  organizationId: autoJoinOrg.id,
+                },
+              }
+            : undefined,
+        },
+      });
 
       return reply.status(201).send();
     },
