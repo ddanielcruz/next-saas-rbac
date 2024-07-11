@@ -7,7 +7,7 @@ import { Role } from './roles';
 type DefinePermissions = (user: User, builder: AbilityBuilder<AppAbility>) => void;
 
 export const permissions: Record<Role, DefinePermissions> = {
-  admin(user, { can, cannot }) {
+  ADMIN(user, { can, cannot }) {
     can('manage', 'all');
 
     // When using "manage all," we need to restrict full access to a subject by using "cannot,"
@@ -15,12 +15,12 @@ export const permissions: Record<Role, DefinePermissions> = {
     cannot('manage', 'Organization');
     can('manage', 'Organization', { ownerId: { $eq: user.id } });
   },
-  member(user, { can }) {
+  MEMBER(user, { can }) {
     can('read', 'User');
     can(['create', 'read'], 'Project');
     can(['update', 'delete'], 'Project', { ownerId: { $eq: user.id } });
   },
-  billing(_user, { can }) {
+  BILLING(_user, { can }) {
     can('manage', 'Billing');
   },
 };
