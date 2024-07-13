@@ -20,7 +20,7 @@ export async function createAccount(app: FastifyInstance) {
           password: z.string().min(8),
         }),
         response: {
-          201: z.object({}),
+          201: z.void(),
         },
       },
     },
