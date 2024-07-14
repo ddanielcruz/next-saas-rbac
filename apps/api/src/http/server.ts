@@ -2,6 +2,7 @@ import fastifyCors from '@fastify/cors';
 import fastifyJwt from '@fastify/jwt';
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUI from '@fastify/swagger-ui';
+import { env } from '@saas/env';
 import { fastify } from 'fastify';
 import {
   jsonSchemaTransform,
@@ -9,8 +10,6 @@ import {
   validatorCompiler,
   ZodTypeProvider,
 } from 'fastify-type-provider-zod';
-
-import { env } from '@/config/env';
 
 import { errorHandler } from './error-handler';
 import { authenticateWithGitHub } from './routes/auth/authenticate-with-github';
@@ -36,18 +35,28 @@ app.register(fastifySwagger, {
     },
     servers: [
       {
-        url: 'http://localhost:3333',
-        description: 'Development server',
+        url: `http://${env.HOST}:${env.PORT}`,
+        description: 'Server',
       },
     ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 });
 
 app.register(fastifySwaggerUI, { routePrefix: '/docs' });
 
-app.register(fastifyCors, { origin: '*' });
 app.register(fastifyJwt, { secret: env.JWT_SECRET });
+
+app.register(fastifyCors);
 
 app.register(createAccount);
 app.register(authenticateWithPassword);
