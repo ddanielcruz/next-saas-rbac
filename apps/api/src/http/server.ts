@@ -10,7 +10,10 @@ import {
   ZodTypeProvider,
 } from 'fastify-type-provider-zod';
 
+import { env } from '@/config/env';
+
 import { errorHandler } from './error-handler';
+import { authenticateWithGitHub } from './routes/auth/authenticate-with-github';
 import { authenticateWithPassword } from './routes/auth/authenticate-with-password';
 import { createAccount } from './routes/auth/create-account';
 import { getProfile } from './routes/auth/get-profile';
@@ -44,14 +47,15 @@ app.register(fastifySwagger, {
 app.register(fastifySwaggerUI, { routePrefix: '/docs' });
 
 app.register(fastifyCors, { origin: '*' });
-app.register(fastifyJwt, { secret: 'my-jwt-secret' });
+app.register(fastifyJwt, { secret: env.JWT_SECRET });
 
 app.register(createAccount);
 app.register(authenticateWithPassword);
+app.register(authenticateWithGitHub);
 app.register(getProfile);
 app.register(requestPasswordRecover);
 app.register(resetPassword);
 
-app.listen({ host: '0.0.0.0', port: 3333 }).then((address) => {
+app.listen({ host: env.HOST, port: env.PORT }).then((address) => {
   console.log(`🚀 Server listening at ${address}`);
 });
