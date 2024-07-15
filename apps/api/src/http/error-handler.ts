@@ -4,6 +4,7 @@ import { ZodError } from 'zod';
 import { BadRequestError } from './routes/_errors/bad-request-error';
 import { ConflictError } from './routes/_errors/conflict-error';
 import { ForbiddenError } from './routes/_errors/forbidden-error';
+import { NotFoundError } from './routes/_errors/not-found-error';
 import { UnauthorizedError } from './routes/_errors/unauthorized-error';
 
 export const errorHandler: FastifyInstance['errorHandler'] = async (error, _request, reply) => {
@@ -42,6 +43,14 @@ export const errorHandler: FastifyInstance['errorHandler'] = async (error, _requ
   if (error instanceof ForbiddenError) {
     return reply.status(403).send({
       statusCode: 403,
+      error: error.name,
+      message: error.message,
+    });
+  }
+
+  if (error instanceof NotFoundError) {
+    return reply.status(404).send({
+      statusCode: 404,
       error: error.name,
       message: error.message,
     });
