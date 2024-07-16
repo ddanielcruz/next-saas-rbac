@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const inviteSubjectSchema = z.tuple([
-  z.enum(['manage', 'read', 'update', 'delete']),
+  z.enum(['manage', 'create', 'read', 'update', 'delete']),
   z.literal('Invite'),
 ]);
 
