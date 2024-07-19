@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
 export const metadata = {
-  title: 'Sign Up',
+  title: 'Sign up',
 };
 
 export default function SignUpPage() {
