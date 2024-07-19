@@ -7,7 +7,8 @@
     "react.js"
   ],
   "devDependencies": {
-    "@ae-studio/eslint-config": "^2.1.0"
+    "@ae-studio/eslint-config": "^2.1.0",
+    "eslint-config-next": "15.0.0-rc.0"
   },
   "eslintConfig": {
     "extends": [
