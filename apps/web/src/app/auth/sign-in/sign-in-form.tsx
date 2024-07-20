@@ -3,7 +3,7 @@
 import { AlertTriangleIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useActionState } from 'react';
+import React, { useState, useTransition } from 'react';
 
 import githubIcon from '@/assets/github-icon.svg';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -13,16 +13,29 @@ import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Spinner } from '@/components/ui/spinner';
 
-import { signInWithEmailAndPassword } from './actions';
+import { signInWithEmailAndPassword, type SignInWithEmailAndPasswordResult } from './actions';
 
 export function SignInForm() {
-  const [{ success, message, errors }, formAction, isPending] = useActionState(
-    signInWithEmailAndPassword,
-    { success: false, message: null, errors: null },
-  );
+  const [{ success, message, errors }, setFormState] = useState<SignInWithEmailAndPasswordResult>({
+    success: false,
+    message: null,
+    errors: null,
+  });
+  const [isPending, startTransition] = useTransition();
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const formData = new FormData(event.currentTarget);
+
+    startTransition(async () => {
+      const result = await signInWithEmailAndPassword(formData);
+      setFormState(result);
+    });
+  }
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-5">
       {!success && message && (
         <Alert variant="destructive">
           <AlertTriangleIcon className="size-4" />

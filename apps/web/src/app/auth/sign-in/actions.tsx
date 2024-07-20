@@ -10,7 +10,15 @@ const signInSchema = z.object({
   password: z.string().min(1, { message: 'Password is required.' }),
 });
 
-export async function signInWithEmailAndPassword(_prevState: unknown, data: FormData) {
+export type SignInWithEmailAndPasswordResult = {
+  success: boolean;
+  message: string | null;
+  errors: Record<string, string[]> | null;
+};
+
+export async function signInWithEmailAndPassword(
+  data: FormData,
+): Promise<SignInWithEmailAndPasswordResult> {
   const result = signInSchema.safeParse(Object.fromEntries(data));
   if (!result.success) {
     return {
@@ -25,7 +33,7 @@ export async function signInWithEmailAndPassword(_prevState: unknown, data: Form
     console.log(accessToken);
   } catch (error) {
     if (error instanceof HTTPError) {
-      const { message } = await error.response.json();
+      const { message } = (await error.response.json()) as { message: string };
       return {
         success: false,
         message,
