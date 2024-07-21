@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { z } from 'zod';
 
 import { ACCESS_TOKEN_COOKIE } from '@/auth/auth';
+import type { FormState } from '@/hooks/use-form-state';
 import { signInWithPassword } from '@/http/sign-in-with-password';
 
 const signInSchema = z.object({
@@ -12,15 +13,7 @@ const signInSchema = z.object({
   password: z.string().min(1, { message: 'Password is required.' }),
 });
 
-export type SignInWithEmailAndPasswordResult = {
-  success: boolean;
-  message: string | null;
-  errors: Record<string, string[]> | null;
-};
-
-export async function signInWithEmailAndPassword(
-  data: FormData,
-): Promise<SignInWithEmailAndPasswordResult> {
+export async function signInWithEmailAndPassword(data: FormData): Promise<FormState> {
   const result = signInSchema.safeParse(Object.fromEntries(data));
   if (!result.success) {
     return {

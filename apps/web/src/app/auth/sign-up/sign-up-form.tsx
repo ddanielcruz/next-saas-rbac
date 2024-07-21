@@ -4,7 +4,6 @@ import { AlertTriangleIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import React from 'react';
 
 import githubIcon from '@/assets/github-icon.svg';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -17,18 +16,17 @@ import { Spinner } from '@/components/ui/spinner';
 import { useFormState } from '@/hooks/use-form-state';
 
 import { signInWithGitHub } from '../actions';
-import { signInWithEmailAndPassword } from './actions';
+import { signUpAction } from './actions';
 
-export function SignInForm() {
+export default function SignUpForm() {
   const router = useRouter();
-  const [{ success, message, errors }, handleSubmit, isPending] = useFormState(
-    signInWithEmailAndPassword,
-    () => router.push('/'),
+  const [{ success, message, errors }, handleSubmit, isPending] = useFormState(signUpAction, () =>
+    router.push('/auth/sign-in'),
   );
 
   return (
     <div className="space-y-4">
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {!success && message && (
           <Alert variant="destructive">
             <AlertTriangleIcon className="size-4" />
@@ -36,6 +34,12 @@ export function SignInForm() {
             <AlertDescription>{message}</AlertDescription>
           </Alert>
         )}
+
+        <div className="space-y-1">
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" name="name" />
+          {errors?.name && <FormError>{errors.name[0]}</FormError>}
+        </div>
 
         <div className="space-y-1">
           <Label htmlFor="email">Email</Label>
@@ -47,18 +51,20 @@ export function SignInForm() {
           <Label htmlFor="password">Password</Label>
           <Input type="password" id="password" name="password" />
           {errors?.password && <FormError>{errors.password[0]}</FormError>}
+        </div>
 
-          <Button asChild variant="link" size="sm" className="px-0">
-            <Link href="/auth/forgot-password">Forgot your password?</Link>
-          </Button>
+        <div className="space-y-1">
+          <Label htmlFor="passwordConfirmation">Confirm your password</Label>
+          <Input type="password" id="passwordConfirmation" name="passwordConfirmation" />
+          {errors?.passwordConfirmation && <FormError>{errors.passwordConfirmation[0]}</FormError>}
         </div>
 
         <Button type="submit" className="w-full" loading={isPending}>
-          {isPending ? <Spinner /> : 'Sign in with email'}
+          {isPending ? <Spinner /> : 'Create account'}
         </Button>
 
         <Button type="submit" variant="link" className="w-full" size="sm" asChild>
-          <Link href="/auth/sign-up">Create new account</Link>
+          <Link href="/auth/sign-in">Already registered? Sign in</Link>
         </Button>
       </form>
 
@@ -67,7 +73,7 @@ export function SignInForm() {
       <form action={signInWithGitHub}>
         <Button type="submit" variant="outline" className="w-full">
           <Image src={githubIcon} alt="" className="mr-2 size-4 dark:invert" />
-          Sign in with GitHub
+          Sign up with GitHub
         </Button>
       </form>
     </div>
