@@ -1,6 +1,7 @@
 import { ChevronDownIcon, LogOutIcon } from 'lucide-react';
 
 import { auth } from '@/auth';
+import { getNameInitials } from '@/utils/formatting';
 
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import {
@@ -13,12 +14,7 @@ import { FocusRing } from './ui/focus-ring';
 
 export async function ProfileButton() {
   const { user } = await auth();
-  const nameInitials = (user.name ?? '')
-    .split(' ')
-    .map((name) => name[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
+  const nameInitials = user.name ? getNameInitials(user.name) : '';
 
   return (
     <DropdownMenu>
@@ -29,7 +25,7 @@ export async function ProfileButton() {
             <span className="text-xs text-muted-foreground">{user.email}</span>
           </div>
 
-          <Avatar>
+          <Avatar className="size-8">
             {user.avatarUrl && <AvatarImage src={user.avatarUrl} alt={user.name ?? ''} />}
             <AvatarFallback>{nameInitials}</AvatarFallback>
           </Avatar>
