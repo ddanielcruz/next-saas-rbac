@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 
-import { ACCESS_TOKEN_COOKIE } from '@/auth/auth';
+import { ACCESS_TOKEN_COOKIE } from '@/auth/cookie';
 import { signInWithGitHub } from '@/http/sign-in-with-github';
 
 export async function GET(request: NextRequest) {

@@ -4,7 +4,7 @@ import { HTTPError } from 'ky';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 
-import { ACCESS_TOKEN_COOKIE } from '@/auth/auth';
+import { ACCESS_TOKEN_COOKIE } from '@/auth/cookie';
 import type { FormState } from '@/hooks/use-form-state';
 import { signInWithPassword } from '@/http/sign-in-with-password';
 
