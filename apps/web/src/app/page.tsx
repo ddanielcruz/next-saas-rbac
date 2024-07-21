@@ -1,9 +1,16 @@
+import Link from 'next/link';
+
+import { auth } from '@/auth/auth';
 import { Button } from '@/components/ui/button';
 
-export default function Home() {
+export default async function Home() {
+  await auth();
+
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Button>Click me</Button>
+    <div className="flex h-screen items-center justify-center">
+      <Button asChild>
+        <Link href="api/auth/sign-out">Sign out</Link>
+      </Button>
     </div>
   );
 }

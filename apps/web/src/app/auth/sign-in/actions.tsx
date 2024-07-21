@@ -4,6 +4,7 @@ import { HTTPError } from 'ky';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 
+import { ACCESS_TOKEN_COOKIE } from '@/auth/auth';
 import { signInWithPassword } from '@/http/sign-in-with-password';
 
 const signInSchema = z.object({
@@ -31,7 +32,7 @@ export async function signInWithEmailAndPassword(
 
   try {
     const { accessToken } = await signInWithPassword(result.data);
-    cookies().set('accessToken', accessToken, {
+    cookies().set(ACCESS_TOKEN_COOKIE, accessToken, {
       maxAge: 60 * 60 * 24 * 7, // 1 week
       path: '/',
     });

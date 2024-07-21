@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { type NextRequest, NextResponse } from 'next/server';
 
+import { ACCESS_TOKEN_COOKIE } from '@/auth/auth';
 import { signInWithGitHub } from '@/http/sign-in-with-github';
 
 export async function GET(request: NextRequest) {
@@ -12,7 +13,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { accessToken } = await signInWithGitHub({ code });
-  cookies().set('accessToken', accessToken, {
+  cookies().set(ACCESS_TOKEN_COOKIE, accessToken, {
     maxAge: 60 * 60 * 24 * 7, // 1 week
     path: '/',
   });

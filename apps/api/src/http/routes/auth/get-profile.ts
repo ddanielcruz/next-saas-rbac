@@ -18,10 +18,12 @@ export async function getProfile(app: FastifyInstance) {
           security: [{ bearerAuth: [] }],
           response: {
             200: z.object({
-              id: z.string(),
-              email: z.string().email(),
-              name: z.string().nullish(),
-              avatarUrl: z.string().url().nullish(),
+              user: z.object({
+                id: z.string(),
+                email: z.string().email(),
+                name: z.string().nullish(),
+                avatarUrl: z.string().url().nullish(),
+              }),
             }),
           },
         },
@@ -38,7 +40,7 @@ export async function getProfile(app: FastifyInstance) {
           },
         });
 
-        return reply.send(user);
+        return reply.send({ user });
       },
     );
 }
