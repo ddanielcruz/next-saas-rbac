@@ -54,7 +54,7 @@ export async function OrganizationSwitcher() {
                 <Link href={`/org/${org.slug}`}>
                   <Avatar className="mr-2 !size-4">
                     {org.avatarUrl && <AvatarImage src={org.avatarUrl} alt={org.name} />}
-                    <AvatarFallback>{nameInitials}</AvatarFallback>
+                    <AvatarFallback className="text-xs">{nameInitials}</AvatarFallback>
                   </Avatar>
                   <span className="line-clamp-1">{org.name}</span>
                 </Link>
