@@ -18,3 +18,11 @@ export async function auth() {
 
   redirect('/api/auth/sign-out');
 }
+
+export function isAuthenticated() {
+  return !!cookies().get(ACCESS_TOKEN_COOKIE)?.value;
+}
+
+export function getCurrentOrg() {
+  return cookies().get('org')?.value ?? null;
+}

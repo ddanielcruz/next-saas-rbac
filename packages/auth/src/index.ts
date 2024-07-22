@@ -9,6 +9,7 @@ import { ProjectSubject } from './subjects/project';
 import { UserSubject } from './subjects/user';
 
 export * from './models';
+export type { Role } from './roles';
 
 type AppAbilities =
   | UserSubject

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 
-import { isAuthenticated } from '@/auth/is-authenticated';
+import { isAuthenticated } from '@/auth';
 
 export default async function AppLayout({
   children,

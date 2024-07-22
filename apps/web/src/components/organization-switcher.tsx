@@ -1,7 +1,7 @@
 import { ChevronsUpDownIcon, PlusCircleIcon } from 'lucide-react';
-import { cookies } from 'next/headers';
 import Link from 'next/link';
 
+import { getCurrentOrg } from '@/auth';
 import { getOrganizations } from '@/http/get-organizations';
 import { getNameInitials } from '@/utils/formatting';
 
@@ -20,7 +20,7 @@ import { FocusRing } from './ui/focus-ring';
 export async function OrganizationSwitcher() {
   const { organizations } = await getOrganizations();
 
-  const currentOrgSlug = cookies().get('org')?.value;
+  const currentOrgSlug = getCurrentOrg();
   const currentOrg = organizations.find((org) => org.slug === currentOrgSlug);
 
   return (
