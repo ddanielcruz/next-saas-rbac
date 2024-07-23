@@ -26,7 +26,10 @@ export async function createOrganization(app: FastifyInstance) {
           }),
           response: {
             201: z.object({
-              organizationId: z.string(),
+              organization: z.object({
+                id: z.string(),
+                slug: z.string(),
+              }),
             }),
           },
         },
@@ -62,7 +65,12 @@ export async function createOrganization(app: FastifyInstance) {
           },
         });
 
-        return reply.status(201).send({ organizationId: org.id });
+        return reply.status(201).send({
+          organization: {
+            id: org.id,
+            slug: org.slug,
+          },
+        });
       },
     );
 }

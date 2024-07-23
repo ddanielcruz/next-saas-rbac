@@ -28,7 +28,7 @@ export function SignInForm() {
 
   return (
     <div className="space-y-4">
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {!success && message && (
           <Alert variant="destructive">
             <AlertTriangleIcon className="size-4" />

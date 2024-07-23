@@ -13,29 +13,31 @@ export async function Header() {
   const permissions = await getUserAbility();
 
   return (
-    <header className="mx-auto flex max-w-7xl items-center justify-between">
-      <div className="flex items-center gap-4">
-        <Image
-          src={rocketseatIcon}
-          alt="Rocketseat"
-          className="size-6 dark:invert"
-          height={24}
-          width={24}
-          priority
-        />
+    <div className="border-b py-3">
+      <header className="mx-auto flex max-w-7xl items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Image
+            src={rocketseatIcon}
+            alt="Rocketseat"
+            className="size-6 dark:invert"
+            height={24}
+            width={24}
+            priority
+          />
 
-        <SlashIcon className="size-3 rotate-[-24deg] text-border" />
+          <SlashIcon className="size-3 rotate-[-24deg] text-border" />
 
-        <OrganizationSwitcher />
+          <OrganizationSwitcher />
 
-        {permissions?.can('read', 'Project') && <></>}
-      </div>
+          {permissions?.can('read', 'Project') && <></>}
+        </div>
 
-      <div className="flex items-center gap-4">
-        <ProfileButton />
-        <Separator orientation="vertical" className="h-5" />
-        <ThemeSwitcher />
-      </div>
-    </header>
+        <div className="flex items-center gap-4">
+          <ProfileButton />
+          <Separator orientation="vertical" className="h-5" />
+          <ThemeSwitcher />
+        </div>
+      </header>
+    </div>
   );
 }

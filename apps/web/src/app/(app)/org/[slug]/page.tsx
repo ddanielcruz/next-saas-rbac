@@ -6,9 +6,9 @@ export const metadata = {
 
 export default async function Projects() {
   return (
-    <div className="py-4">
+    <div>
       <Header />
-      <main />
+      <main className="mx-auto w-full max-w-7xl space-y-4 py-4" />
     </div>
   );
 }
