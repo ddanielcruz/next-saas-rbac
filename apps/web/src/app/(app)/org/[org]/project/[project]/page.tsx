@@ -4,11 +4,11 @@ export const metadata = {
   title: 'Projects',
 };
 
-export default async function Projects() {
+export default async function Project() {
   return (
     <div>
       <Header />
-      <main className="mx-auto w-full max-w-7xl space-y-4 py-4" />
+      <main className="mx-auto w-full max-w-7xl space-y-4 p-4" />
     </div>
   );
 }

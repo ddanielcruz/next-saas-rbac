@@ -6,6 +6,7 @@ import { getUserAbility } from '@/auth/ability';
 
 import { OrganizationSwitcher } from './organization-switcher';
 import { ProfileButton } from './profile-button';
+import { ProjectSwitcher } from './project-switcher';
 import { ThemeSwitcher } from './theme/theme-switcher';
 import { Separator } from './ui/separator';
 
@@ -14,7 +15,7 @@ export async function Header() {
 
   return (
     <div className="border-b py-3">
-      <header className="mx-auto flex max-w-7xl items-center justify-between">
+      <header className="mx-auto flex max-w-7xl items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <Image
             src={rocketseatIcon}
@@ -29,7 +30,12 @@ export async function Header() {
 
           <OrganizationSwitcher />
 
-          {permissions?.can('read', 'Project') && <></>}
+          {permissions?.can('read', 'Project') && (
+            <>
+              <SlashIcon className="size-3 rotate-[-24deg] text-border" />
+              <ProjectSwitcher />
+            </>
+          )}
         </div>
 
         <div className="flex items-center gap-4">
