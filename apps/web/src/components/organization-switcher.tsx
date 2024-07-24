@@ -33,7 +33,9 @@ export async function OrganizationSwitcher() {
                 {currentOrg.avatarUrl && (
                   <AvatarImage src={currentOrg.avatarUrl} alt={currentOrg.name} />
                 )}
-                <AvatarFallback>{getNameInitials(currentOrg.name, 1)}</AvatarFallback>
+                <AvatarFallback className="text-xs">
+                  {getNameInitials(currentOrg.name, 1)}
+                </AvatarFallback>
               </Avatar>
               <span className="truncate text-left">{currentOrg.name}</span>
             </>

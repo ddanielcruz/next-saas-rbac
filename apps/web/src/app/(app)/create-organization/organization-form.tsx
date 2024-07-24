@@ -22,7 +22,7 @@ export function OrganizationForm() {
       {!success && message && (
         <Alert variant="destructive">
           <AlertTriangleIcon className="size-4" />
-          <AlertTitle>Sign in failed!</AlertTitle>
+          <AlertTitle>Failed to create organization!</AlertTitle>
           <AlertDescription>{message}</AlertDescription>
         </Alert>
       )}

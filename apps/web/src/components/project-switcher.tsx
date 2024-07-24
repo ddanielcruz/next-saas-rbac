@@ -52,7 +52,9 @@ export function ProjectSwitcher() {
                     {currentProject.avatarUrl && (
                       <AvatarImage src={currentProject.avatarUrl} alt={currentProject.name} />
                     )}
-                    <AvatarFallback>{getNameInitials(currentProject.name, 1)}</AvatarFallback>
+                    <AvatarFallback className="text-xs">
+                      {getNameInitials(currentProject.name, 1)}
+                    </AvatarFallback>
                   </Avatar>
                   <span className="truncate text-left">{currentProject.name}</span>
                 </>
