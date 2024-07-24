@@ -3,6 +3,7 @@ import Image from 'next/image';
 
 import rocketseatIcon from '@/assets/rocketseat-icon.svg';
 import { getUserAbility } from '@/auth/ability';
+import { cn } from '@/lib/tailwind';
 
 import { OrganizationSwitcher } from './organization-switcher';
 import { ProfileButton } from './profile-button';
@@ -10,11 +11,16 @@ import { ProjectSwitcher } from './project-switcher';
 import { ThemeSwitcher } from './theme/theme-switcher';
 import { Separator } from './ui/separator';
 
-export async function Header() {
+interface HeaderProps {
+  borderless?: boolean;
+  className?: string;
+}
+
+export async function Header({ borderless = false, className }: HeaderProps) {
   const permissions = await getUserAbility();
 
   return (
-    <div className="border-b py-3">
+    <div className={cn('py-3', !borderless && 'border-b', className)}>
       <header className="mx-auto flex max-w-7xl items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <Image
