@@ -1,12 +1,15 @@
 'use server';
 
 import { HTTPError } from 'ky';
+import { revalidateTag } from 'next/cache';
 import { z } from 'zod';
 
+import { getCurrentOrg } from '@/auth';
 import type { FormState } from '@/hooks/use-form-state';
 import { createOrganization } from '@/http/create-organization';
+import { updateOrganization } from '@/http/update-organization';
 
-const createOrganizationSchema = z
+const organizationSchema = z
   .object({
     name: z.string().min(4, { message: 'Organization name must be at least 4 characters long.' }),
     domain: z
@@ -34,8 +37,10 @@ const createOrganizationSchema = z
     path: ['domain'],
   });
 
+export type OrganizationSchema = z.infer<typeof organizationSchema>;
+
 export async function createOrganizationAction(data: FormData): Promise<FormState> {
-  const result = createOrganizationSchema.safeParse(Object.fromEntries(data));
+  const result = organizationSchema.safeParse(Object.fromEntries(data));
   if (!result.success) {
     return {
       success: false,
@@ -46,6 +51,7 @@ export async function createOrganizationAction(data: FormData): Promise<FormStat
 
   try {
     await createOrganization(result.data);
+    revalidateTag('organizations');
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = (await error.response.json()) as { message: string };
@@ -68,6 +74,51 @@ export async function createOrganizationAction(data: FormData): Promise<FormStat
   return {
     success: true,
     message: 'Organization created successfully.',
+    errors: null,
+  };
+}
+
+export async function updateOrganizationAction(data: FormData): Promise<FormState> {
+  const currentOrg = getCurrentOrg()!;
+  const result = organizationSchema.safeParse(Object.fromEntries(data));
+
+  if (!result.success) {
+    return {
+      success: false,
+      message: null,
+      errors: result.error.flatten().fieldErrors,
+    };
+  }
+
+  try {
+    await updateOrganization({
+      org: currentOrg,
+      ...result.data,
+    });
+
+    revalidateTag('organizations');
+  } catch (error) {
+    if (error instanceof HTTPError) {
+      const { message } = (await error.response.json()) as { message: string };
+      return {
+        success: false,
+        message,
+        errors: null,
+      };
+    }
+
+    console.error(error);
+
+    return {
+      success: false,
+      message: 'An unexpected error occurred. Please try again.',
+      errors: null,
+    };
+  }
+
+  return {
+    success: true,
+    message: 'Organization updated successfully.',
     errors: null,
   };
 }
