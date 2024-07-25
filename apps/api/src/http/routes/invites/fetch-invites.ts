@@ -37,6 +37,7 @@ export async function fetchInvites(app: FastifyInstance) {
                       avatarUrl: z.string().url().nullish(),
                     })
                     .nullish(),
+                  createdAt: z.date(),
                 }),
               ),
             }),
@@ -68,6 +69,7 @@ export async function fetchInvites(app: FastifyInstance) {
                 avatarUrl: true,
               },
             },
+            createdAt: true,
           },
         });
 
