@@ -1,9 +1,11 @@
 import { getCurrentOrg } from '@/auth';
 import { getUserAbility } from '@/auth/ability';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import { getOrganization } from '@/http/get-organization';
 
 import { OrganizationForm } from '../../organization-form';
+import { Billing } from './billing';
 import { ShutdownOrganizationButton } from './shutdown-organization-button';
 
 export default async function Settings() {
@@ -32,29 +34,27 @@ export default async function Settings() {
       )}
 
       {canReadBilling && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Billing</CardTitle>
-            <CardDescription>Manage your billing information.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p>Coming soon...</p>
-          </CardContent>
-        </Card>
+        <>
+          {canUpdateOrg && <Separator />}
+          <Billing />
+        </>
       )}
 
       {canShutdownOrg && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Shutdown Organization</CardTitle>
-            <CardDescription>
-              Once you shutdown your organization, all data will be permanently deleted.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ShutdownOrganizationButton />
-          </CardContent>
-        </Card>
+        <>
+          {(canReadBilling || canUpdateOrg) && <Separator />}
+          <Card>
+            <CardHeader>
+              <CardTitle>Shutdown Organization</CardTitle>
+              <CardDescription>
+                Once you shutdown your organization, all data will be permanently deleted.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <ShutdownOrganizationButton />
+            </CardContent>
+          </Card>
+        </>
       )}
     </div>
   );
