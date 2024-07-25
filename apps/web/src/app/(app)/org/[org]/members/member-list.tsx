@@ -12,6 +12,7 @@ import { getOrganization } from '@/http/get-organization';
 import { getNameInitials } from '@/utils/formatting';
 
 import { removeMemberAction } from './actions';
+import { UpdateMemberRoleSelect } from './update-member-role-select';
 
 export async function MemberList() {
   const currentOrg = getCurrentOrg()!;
@@ -67,14 +68,23 @@ export async function MemberList() {
                         </Button>
                       )}
 
-                      {!isMe && !isOwner && permissions?.can('delete', 'User') && (
-                        <form action={removeMemberAction.bind(null, member.id)}>
-                          <Button type="submit" variant="destructive" size="sm">
-                            <UserMinusIcon className="mr-2 size-4" />
-                            Remove
-                          </Button>
-                        </form>
-                      )}
+                      <UpdateMemberRoleSelect
+                        memberId={member.id}
+                        value={member.role}
+                        disabled={isOwner || isMe || permissions?.cannot('update', 'User')}
+                      />
+
+                      <form action={removeMemberAction.bind(null, member.id)}>
+                        <Button
+                          disabled={isMe || isOwner || permissions?.cannot('delete', 'User')}
+                          type="submit"
+                          variant="destructive"
+                          size="sm"
+                        >
+                          <UserMinusIcon className="mr-2 size-4" />
+                          Remove
+                        </Button>
+                      </form>
                     </div>
                   </TableCell>
                 </TableRow>
