@@ -6,6 +6,7 @@ import { getUserAbility } from '@/auth/ability';
 import { cn } from '@/lib/tailwind';
 
 import { OrganizationSwitcher } from './organization-switcher';
+import { PendingInvites } from './pending-invites';
 import { ProfileButton } from './profile-button';
 import { ProjectSwitcher } from './project-switcher';
 import { ThemeSwitcher } from './theme/theme-switcher';
@@ -45,9 +46,10 @@ export async function Header({ borderless = false, className }: HeaderProps) {
         </div>
 
         <div className="flex items-center gap-4">
-          <ProfileButton />
-          <Separator orientation="vertical" className="h-5" />
+          <PendingInvites />
           <ThemeSwitcher />
+          <Separator orientation="vertical" className="h-5" />
+          <ProfileButton />
         </div>
       </header>
     </div>
