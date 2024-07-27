@@ -3,7 +3,7 @@
 import { AlertTriangleIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 
 import githubIcon from '@/assets/github-icon.svg';
@@ -21,6 +21,8 @@ import { signInWithEmailAndPassword } from './actions';
 
 export function SignInForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [{ success, message, errors }, handleSubmit, isPending] = useFormState(
     signInWithEmailAndPassword,
     () => router.push('/'),
@@ -39,13 +41,24 @@ export function SignInForm() {
 
         <div className="space-y-1">
           <Label htmlFor="email">Email</Label>
-          <Input type="email" id="email" name="email" />
+          <Input
+            type="email"
+            id="email"
+            name="email"
+            defaultValue={searchParams.get('email') ?? ''}
+            autoFocus={!searchParams.has('email')}
+          />
           {errors?.email && <FormError>{errors.email[0]}</FormError>}
         </div>
 
         <div className="space-y-1">
           <Label htmlFor="password">Password</Label>
-          <Input type="password" id="password" name="password" />
+          <Input
+            type="password"
+            id="password"
+            name="password"
+            autoFocus={searchParams.has('email')}
+          />
           {errors?.password && <FormError>{errors.password[0]}</FormError>}
 
           <Button asChild variant="link" size="sm" className="px-0">

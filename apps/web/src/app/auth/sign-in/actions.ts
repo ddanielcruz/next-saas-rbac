@@ -6,6 +6,7 @@ import { z } from 'zod';
 
 import { ACCESS_TOKEN_COOKIE } from '@/auth/cookie';
 import type { FormState } from '@/hooks/use-form-state';
+import { acceptInvite } from '@/http/accept-invite';
 import { signInWithPassword } from '@/http/sign-in-with-password';
 
 const signInSchema = z.object({
@@ -29,6 +30,14 @@ export async function signInWithEmailAndPassword(data: FormData): Promise<FormSt
       maxAge: 60 * 60 * 24 * 7, // 1 week
       path: '/',
     });
+
+    const inviteId = cookies().get('inviteId')?.value;
+    if (inviteId) {
+      try {
+        await acceptInvite(inviteId);
+        cookies().delete('inviteId');
+      } catch (error) {}
+    }
   } catch (error) {
     if (error instanceof HTTPError) {
       const { message } = (await error.response.json()) as { message: string };
